@@ -23,13 +23,13 @@ Role assignment and management
  Category management
  Delete any event regardless of ownership
  System-wide reporting
-🔐 System configuration
+System configuration
 
 2. Organizer
 Access Level: Event Management
 
 Capabilities:
-📅 Create and manage own events
+Create and manage own events
 ✏️ Update event details (date, location, capacity)
 👥 Manage event registrations
 📊 View participant lists
