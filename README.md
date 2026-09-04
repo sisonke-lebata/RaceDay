@@ -10,5 +10,25 @@ Payment Integration: Track payments with multiple payment methods (credit card, 
 Sponsor Management: Link sponsors to events with tiered sponsorship levels
 Reporting & Analytics: Built-in views for participant dashboards, event statistics, and financial reporting.
 
+ User Roles
+RaceDay implements a role-based access control system with three distinct user roles:
 
+1. Administrator
+Access Level: Full System Access
+
+Capabilities:
+
+👑 Full system administration
+
+👥 User management (create, update, delete)
+
+📋 Role assignment and management
+
+🏷️ Category management
+
+🗑️ Delete any event regardless of ownership
+
+📊 System-wide reporting
+
+🔐 System configuration
 
