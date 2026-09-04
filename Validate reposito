@@ -1,0 +1,31 @@
+name: RaceDay CI                              # Workflow name
+
+on:                                           # When to run
+  push:                                       # On push to main
+    branches: [ main ]
+  pull_request:                               # On PR to main
+    branches: [ main ]
+
+jobs:
+  build:                                      # Job name
+    name: Build and Validate
+    runs-on: ubuntu-latest                    # Use Ubuntu
+
+    steps:                                    # What to do
+      - name: Checkout Repository             # Step 1
+        uses: actions/checkout@v4             # GitHub action
+
+      - name: Show Repository Files           # Step 2
+        run: ls -la                           # List all files
+
+      - name: Check README File               # Step 3
+        run: |                                # Multi-line command
+          if [ -f "README.md" ]; then
+            echo "README.md found successfully."
+          else
+            echo "README.md not found."
+            exit 1
+          fi
+
+      - name: Validation Complete             # Step 4
+        run: echo "RaceDay validation successful!"
