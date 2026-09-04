@@ -17,8 +17,8 @@ RaceDay implements a role-based access control system with three distinct user r
 Access Level: Full System Access
 
 Capabilities:
-👑 Full system administration
-👥 User management (create, update, delete)
+ Full system administration
+ User management (create, update, delete)
 📋 Role assignment and management
 🏷️ Category management
 🗑️ Delete any event regardless of ownership
