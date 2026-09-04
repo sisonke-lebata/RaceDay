@@ -36,3 +36,6 @@ Create and manage own events
  Publish race results
 Manage event sponsors
 View event statistics
+
+<img width="574" height="262" alt="workflow" src="https://github.com/user-attachments/assets/1c98b14f-ef0d-4f8b-9e68-8f0069dfc93c" />
+
