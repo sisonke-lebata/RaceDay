@@ -21,8 +21,8 @@ Capabilities:
  User management (create, update, delete)
 Role assignment and management
  Category management
-🗑️ Delete any event regardless of ownership
-📊 System-wide reporting
+ Delete any event regardless of ownership
+ System-wide reporting
 🔐 System configuration
 
 2. Organizer
