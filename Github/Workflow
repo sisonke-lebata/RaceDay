@@ -1,0 +1,61 @@
+name: RaceDay CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: List repository files
+        run: |
+          echo "========================================="
+          echo "RaceDay Repository Structure"
+          echo "========================================="
+          ls -la
+          echo "========================================="
+      
+      - name: Check README exists
+        run: |
+          if [ -f "README.md" ]; then
+            echo "✅ README.md found"
+          else
+            echo "❌ README.md missing"
+            exit 1
+          fi
+      
+      - name: Check required folders
+        run: |
+          echo "Checking folders..."
+          
+          if [ -d "Database" ]; then
+            echo "✅ Database folder exists"
+          else
+            echo "⚠️ Database folder missing (optional)"
+          fi
+          
+          if [ -d "Documentation" ]; then
+            echo "✅ Documentation folder exists"
+          else
+            echo "⚠️ Documentation folder missing (optional)"
+          fi
+          
+          if [ -d "Scripts" ]; then
+            echo "✅ Scripts folder exists"
+          else
+            echo "⚠️ Scripts folder missing (optional)"
+          fi
+      
+      - name: Validate complete
+        run: |
+          echo "========================================="
+          echo "✅ RaceDay validation successful!"
+          echo "========================================="
