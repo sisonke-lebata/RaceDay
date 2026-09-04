@@ -30,8 +30,8 @@ Access Level: Event Management
 
 Capabilities:
 Create and manage own events
-✏️ Update event details (date, location, capacity)
-👥 Manage event registrations
+ Update event details (date, location, capacity)
+ Manage event registrations
 📊 View participant lists
 🏆 Publish race results
 🤝 Manage event sponsors
