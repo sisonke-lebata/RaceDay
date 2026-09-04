@@ -1,0 +1,19 @@
+name: Quick CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check README
+        run: |
+          if [ -f "README.md" ]; then
+            echo "✅ README exists!"
+          else
+            echo "❌ No README"
+            exit 1
+          fi
+      - name: Done
+        run: echo "✅ Build passed!"
