@@ -34,5 +34,5 @@ Create and manage own events
  Manage event registrations
  View participant lists
  Publish race results
-🤝 Manage event sponsors
-📈 View event statistics
+Manage event sponsors
+View event statistics
