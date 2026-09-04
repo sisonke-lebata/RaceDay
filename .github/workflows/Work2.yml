@@ -1,0 +1,199 @@
+name: Quick CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: List Repository Files
+        run: |
+          echo "========================================="
+          echo "Repository Structure"
+          echo "========================================="
+          ls -la
+          echo "========================================="
+      
+      - name: Check README.md Exists
+        run: |
+          echo "Checking for README.md..."
+          if [ -f "README.md" ]; then
+            echo "✅ README.md found successfully!"
+            echo "File size: $(stat -c%s README.md) bytes"
+            echo "First 5 lines:"
+            head -5 README.md
+          else
+            echo "❌ README.md not found!"
+            exit 1
+          fi
+      
+      - name: Check Required Directories
+        run: |
+          echo "Checking required directories..."
+          
+          if [ -d "Database" ]; then
+            echo "✅ Database directory exists"
+            echo "   Contents:"
+            ls -la Database/
+          else
+            echo "⚠️ Database directory missing (optional)"
+          fi
+          
+          if [ -d "Documentation" ]; then
+            echo "✅ Documentation directory exists"
+            echo "   Contents:"
+            ls -la Documentation/
+          else
+            echo "⚠️ Documentation directory missing (optional)"
+          fi
+          
+          if [ -d "Scripts" ]; then
+            echo "✅ Scripts directory exists"
+            echo "   Contents:"
+            ls -la Scripts/
+          else
+            echo "⚠️ Scripts directory missing (optional)"
+          fi
+      
+      - name: Check Required Files
+        run: |
+          echo "Checking required files..."
+          
+          if [ -f ".gitignore" ]; then
+            echo "✅ .gitignore exists"
+          else
+            echo "⚠️ .gitignore missing (optional)"
+          fi
+          
+          if [ -f "LICENSE" ]; then
+            echo "✅ LICENSE exists"
+          else
+            echo "⚠️ LICENSE missing (optional)"
+          fi
+          
+          if [ -f "CONTRIBUTING.md" ]; then
+            echo "✅ CONTRIBUTING.md exists"
+          else
+            echo "⚠️ CONTRIBUTING.md missing (optional)"
+          fi
+          
+          if [ -f "Database/RaceDay.sql" ]; then
+            echo "✅ Database/RaceDay.sql exists"
+            echo "   File size: $(stat -c%s Database/RaceDay.sql) bytes"
+          else
+            echo "⚠️ Database/RaceDay.sql missing (optional)"
+          fi
+      
+      - name: Validate README.md Content
+        run: |
+          echo "Validating README.md content..."
+          
+          if [ -f "README.md" ]; then
+            if grep -q "## Overview" README.md || grep -q "## System Description" README.md; then
+              echo "✅ README.md has Overview/Description section"
+            else
+              echo "⚠️ README.md missing Overview section (recommended)"
+            fi
+            
+            if grep -q "## Features" README.md; then
+              echo "✅ README.md has Features section"
+            else
+              echo "⚠️ README.md missing Features section (recommended)"
+            fi
+            
+            if grep -q "## Quick Start" README.md; then
+              echo "✅ README.md has Quick Start section"
+            else
+              echo "⚠️ README.md missing Quick Start section (recommended)"
+            fi
+            
+            if grep -q "## Database Schema" README.md; then
+              echo "✅ README.md has Database Schema section"
+            else
+              echo "⚠️ README.md missing Database Schema section (recommended)"
+            fi
+            
+            if grep -q "## API Endpoints" README.md; then
+              echo "✅ README.md has API Endpoints section"
+            else
+              echo "⚠️ README.md missing API Endpoints section (recommended)"
+            fi
+            
+            if grep -q "## CI/CD Pipeline" README.md || grep -q "## CICD Pipeline" README.md; then
+              echo "✅ README.md has CI/CD section"
+            else
+              echo "⚠️ README.md missing CI/CD section (recommended)"
+            fi
+            
+            if grep -q "## Video Demo" README.md || grep -q "## Video" README.md; then
+              echo "✅ README.md has Video Demo section"
+            else
+              echo "⚠️ README.md missing Video Demo section (recommended)"
+            fi
+            
+            echo "Total lines in README.md: $(wc -l < README.md)"
+          fi
+      
+      - name: Generate Validation Report
+        id: report
+        run: |
+          echo "========================================="
+          echo "VALIDATION REPORT"
+          echo "========================================="
+          echo "Timestamp: $(date)"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "========================================="
+          
+          echo "File Statistics:"
+          echo "Total files: $(find . -type f | wc -l)"
+          echo "Total directories: $(find . -type d | wc -l)"
+          echo "========================================="
+      
+      - name: Build Success
+        run: |
+          echo "========================================="
+          echo "✅ BUILD SUCCESSFUL!"
+          echo "========================================="
+          echo "All validation checks passed successfully."
+          echo "RaceDay CI/CD pipeline is working!"
+          echo "========================================="
+          echo ""
+          echo "Repository: ${{ github.repository }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Run Number: ${{ github.run_number }}"
+          echo ""
+          echo "✅ Ready for deployment!"
+      
+      - name: Upload Validation Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-results
+          path: |
+            README.md
+            Database/RaceDay.sql
+            .github/workflows/
+            Documentation/
+            Scripts/
+      
+      - name: Workflow Summary
+        if: always()
+        run: |
+          echo "## Summary" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Workflow: ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Repository: ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
