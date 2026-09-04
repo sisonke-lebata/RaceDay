@@ -19,8 +19,8 @@ Access Level: Full System Access
 Capabilities:
  Full system administration
  User management (create, update, delete)
-📋 Role assignment and management
-🏷️ Category management
+Role assignment and management
+ Category management
 🗑️ Delete any event regardless of ownership
 📊 System-wide reporting
 🔐 System configuration
