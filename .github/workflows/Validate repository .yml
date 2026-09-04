@@ -1,0 +1,120 @@
+name: Repository Structure Validation
+
+on:
+  push:
+    branches: [ main, develop, staging ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  validate-structure:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: |
+          npm install -g yaml-lint
+          npm install -g markdownlint-cli
+      
+      - name: Validate repository structure
+        id: validate
+        run: |
+          echo "Starting repository validation..."
+          
+          ERRORS=0
+          WARNINGS=0
+          
+          echo "Checking Required Directories..."
+          
+          if [ -d "Database" ]; then
+            echo "✅ Database directory exists"
+          else
+            echo "❌ Database directory is MISSING"
+            ERRORS=$((ERRORS+1))
+          fi
+          
+          if [ -d "Documentation" ]; then
+            echo "✅ Documentation directory exists"
+          else
+            echo "❌ Documentation directory is MISSING"
+            ERRORS=$((ERRORS+1))
+          fi
+          
+          if [ -d "Scripts" ]; then
+            echo "✅ Scripts directory exists"
+          else
+            echo "❌ Scripts directory is MISSING"
+            ERRORS=$((ERRORS+1))
+          fi
+          
+          echo "Checking Required Files..."
+          
+          if [ -f "Database/RaceDay.sql" ]; then
+            echo "✅ Database/RaceDay.sql exists"
+          else
+            echo "❌ Database/RaceDay.sql is MISSING"
+            ERRORS=$((ERRORS+1))
+          fi
+          
+          if [ -f "README.md" ]; then
+            echo "✅ README.md exists"
+          else
+            echo "❌ README.md is MISSING"
+            ERRORS=$((ERRORS+1))
+          fi
+          
+          if [ -f "CONTRIBUTING.md" ]; then
+            echo "✅ CONTRIBUTING.md exists"
+          else
+            echo "⚠️  CONTRIBUTING.md is MISSING (optional)"
+            WARNINGS=$((WARNINGS+1))
+          fi
+          
+          if [ -f "LICENSE" ]; then
+            echo "✅ LICENSE exists"
+          else
+            echo "⚠️  LICENSE is MISSING (optional)"
+            WARNINGS=$((WARNINGS+1))
+          fi
+          
+          if [ -f ".gitignore" ]; then
+            echo "✅ .gitignore exists"
+          else
+            echo "⚠️  .gitignore is MISSING (optional)"
+            WARNINGS=$((WARNINGS+1))
+          fi
+          
+          echo ""
+          echo "========================================="
+          echo "Validation Summary"
+          echo "========================================="
+          echo "Errors:   $ERRORS"
+          echo "Warnings: $WARNINGS"
+          echo "========================================="
+          
+          if [ $ERRORS -gt 0 ]; then
+            echo "❌ Validation FAILED! Please fix the errors above."
+            exit 1
+          else
+            echo "✅ Validation PASSED! All checks completed successfully."
+          fi
+      
+      - name: Upload validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-results
+          path: |
+            README.md
+            Database/RaceDay.sql
+            .github/workflows/
+            Documentation/
